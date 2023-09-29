@@ -5,4 +5,33 @@ HTTP는 견고한 생태계를 갖추고 있다. 그래서 HTTP를 사용하지 
 
 TLS Handshake
 =
+클라이언트와 서버가 TLS를 통해 데이터를 주고받기 이전에 암호화된 터널은 서로 교섭해야한다. TLS의 버전, 암호화 알고리즘, 보안 이슈 등등에 대해 합의를 해야한다. 
+
+TCP를 사용하는 경우를 가정한다면 3-way handshake 이후, TLS handshake를 진행한다. 과정은 아래와 같다. 우선 TLS의 버전, 암호화 알고리즘, 보안 이슈 등을 결정한다. 결정에 합의가 되었다면 이제부터는 대칭키를 발행하여 데이터를 서버의 공개키로 암호화하여 전송한다. 클라이언트로 회신받은 대칭키를 판별하고 fin 메시지를 보낸다.
+
+일반적인 TLS handshake는 결국 tcp기반이기 때문에 2번의 라운드 트립을 전제로 한다.
+
+Application Layer Protocol Negotiation (ALPN)
+=
+HTTP 이외의 프로토콜을 사용하는 경우, 방화벽과 같은 중간요소에 의해 포트의 사용 등이 제한될 수 있다. 그래서 HTTP는 Upgrade를 제공한다. 하지만 추가적인 통신이 필요하다는 점에서 느리고 신뢰성이 없다.
+
+TLS 과정을 이용할 수도 있다. 암호화된 터널을 사용하면 신뢰성있는 통신이 가능하다. 하지만 여전히 프로토콜에 대해 교섭하는 과정이 필요하다.
+
+ALPN은 TLS handshake의 과정에서 프로토콜 교섭을 할 수 있게한 확장버전이다. ALPN 역시 handshake는 필요하다. 그래서 http upgrade보다 반드시 빠르다 할 수는 없지만, TLS보다 느리지 않다는 것을 보장할 수는 있다.
+
+
+TLS Session Resumption
+=
+라운드 트립과 암호화 비용을 아낄 수 있다.
+
+예: session identifier, session ticket ...
+
+Chain of Trust and Certificate Authorities
+=
+대칭키를 이용해 신뢰성을 보장한다고 가정할 때, Chain of Trust란 A와 B가 신뢰관계(공개/비밀 키를 이용한 신뢰관계)에 있을때, B가 C에 대해 신뢰관계를 보장(공개 키를 공유)한다면 A는 C를 신뢰하는 것을 의미한다.
+
+웹과 브라우저에서의 Authetication과정은 Chain of Trust 방식으로 작동한다.
+
+
+
 
