@@ -32,6 +32,16 @@ Chain of Trust and Certificate Authorities
 
 웹과 브라우저에서의 Authetication과정은 Chain of Trust 방식으로 작동한다.
 
+각각의 신뢰관계에 있는 경우에서는 Certificate가 폐지되었을 때 CRL 혹은 OCSP를 이용해 관련 정보를 알 수 있다.
+CRL을 이용할 때 폐지된 Certificate를 즉각적으로 알아챌 수 있는 방법은 없으며, 클라이언트에 의해 캐시되었다면, 캐시의 만료시간까지는 유효한 상태가 된다.
+OCSP를 이용하면 쿼리의 형태로 실시간에 가깝게 확인이 가능하다.
+
+Early Termination
+=
+TCP와 TLS의 과정은 3-way handshaking과정을 거친다. 이를 줄이기 위해서는 Early Termination을 생각할 수 있다.
+우리는 네트워크의 지연을 더 줄이기는 어렵다. 하지만 거리를 줄일 수는 있다. Early Termination은 서버를 유저와 가까운 지역에 위치시키는 기술이다. 이 기술을 통해 라운드 트립의 지연을 취소화 할 수 있다. 이 테크닉은 간단한 방법은 레플리카 혹은 캐시를 사용하는 것이 될 수 있다.
+
+하지만 물론 Early Termination보다도 캐싱을 이용해 네트워크를 타지 않는 것이 빠르다.
 
 
 
